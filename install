@@ -1,0 +1,44 @@
+#!/bin/bash
+
+if [ -z ${DEI_PW_FILE+x} ] || [ -z ${DEI_USER+x} ]; then 
+
+    # Determine the shell configuration file
+    SHELL_FILE=
+    case $SHELL in
+        *zsh)
+            SHELL_FILE=$HOME/.zshrc
+            ;;
+        *bash)
+            SHELL_FILE=$HOME/.bashrc
+            ;;
+
+        *)
+            echo "Unsupported shell. Aborting..."
+            exit 1
+            ;;
+    esac
+
+    # Ask for username
+    read -p "DEI username: " dei_user
+
+    # Ask where to store the password
+    read -p "Password file location: " -i $HOME/.dei_pw -e password_file
+
+    # Ask the password
+    read -sp "DEI password: " dei_pw
+
+    # save the password to file
+    echo $dei_pw > $password_file
+
+    # change file permission so that only the current user can access it
+    chmod 600 $password_file 
+
+    # Export some variables
+    echo "export DEI_USER=${dei_user}"
+    echo "export DEI_PW_FILE=${password_file}" >> $SHELL_FILE
+fi
+
+# copy scripts to .local/bin
+installer_dir=$(dirname "$0")
+script_dir=$installer_dir/scripts
+\cp $script_dir/* $HOME/.local/bin
