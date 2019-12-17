@@ -1,0 +1,3 @@
+#!/bin/bash
+
+blade-command qstat

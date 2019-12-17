@@ -26,11 +26,6 @@ LOCAL_DIR=$JOB_DIR
 
 FILTER_FILE=$LOCAL_DIR/.upload
 
-echo $JOB_DIR
-echo $BASE_DIR
-echo $LOCAL_DIR
-echo $BLADE_DIR
-
 # use rsync to copy the content of the folder to blade's login server
 echo "Uploading ${LOCAL_DIR} to ${BLADE_DIR}..."
 sshpass -f $DEI_PW_FILE rsync --info=progress2 -avz --filter=":- $FILTER_FILE" -e ssh $LOCAL_DIR/ $DEI_USER@login.dei.unipd.it:$BLADE_DIR/$BASE_DIR  --delete

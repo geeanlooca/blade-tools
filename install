@@ -41,4 +41,5 @@ fi
 # copy scripts to .local/bin
 installer_dir=$(dirname "$0")
 script_dir=$installer_dir/scripts
+chmod +x $script_dir/*
 \cp $script_dir/* $HOME/.local/bin

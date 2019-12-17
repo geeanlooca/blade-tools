@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ -z ${REMOTE_ADDRESS+x} ]; then 
+    echo "REMOTE_ADDRESS environmental variable is not set. Re-run the install script."
+    exit 1
+fi
+
+if [ -z ${REMOTE_USER+x} ]; then 
+    echo "REMOTE_USER environmental variable is not set. Re-run the install script."
+    exit 1
+fi
+
+echo "$@" | ssh -T -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_ADDRESS
+
+ 

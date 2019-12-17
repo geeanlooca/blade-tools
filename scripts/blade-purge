@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 if [ -z ${DEI_PW_FILE+x} ]; then 
     echo "DEI_PW_FILE environmental variable is not set. Re-run the install script."
     exit 1
@@ -9,6 +10,7 @@ if [ -z ${DEI_USER+x} ]; then
     echo "DEI_USER environmental variable is not set. Re-run the install script."
     exit 1
 fi
+
 
 # parse argument
 if [ $# -eq 0 ]; then
@@ -21,11 +23,8 @@ fi
 # copy the directory to the blade gateway
 JOB_DIR=$(readlink -f $DIR)
 BASE_DIR=$(basename $JOB_DIR)
-BLADE_DIR=/home/$DEI_USER/BLADE/jobs/
+BLADE_DIR=/home/$DEI_USER/BLADE/jobs/$BASE_DIR/
 LOCAL_DIR=$JOB_DIR
 
-FILTER_FILE=$LOCAL_DIR/.upload
-
-# use rsync to copy the content of the folder to blade's login server
-echo "Uploading ${LOCAL_DIR} to ${BLADE_DIR}..."
-sshpass -f $DEI_PW_FILE rsync --info=progress2,stats2 -avz --filter=":- $FILTER_FILE" -e ssh $LOCAL_DIR/ $DEI_USER@login.dei.unipd.it:$BLADE_DIR/$BASE_DIR 
+echo "Deleting $BLADE_DIR"
+blade-command rm -rf $BLADE_DIR

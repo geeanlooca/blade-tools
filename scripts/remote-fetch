@@ -1,12 +1,12 @@
 #!/bin/bash
 
-if [ -z ${DEI_PW_FILE+x} ]; then 
-    echo "DEI_PW_FILE environmental variable is not set. Re-run the install script."
+if [ -z ${REMOTE_ADDRESS+x} ]; then 
+    echo "REMOTE_ADDRESS environmental variable is not set. Re-run the install script."
     exit 1
 fi
 
-if [ -z ${DEI_USER+x} ]; then 
-    echo "DEI_USER environmental variable is not set. Re-run the install script."
+if [ -z ${REMOTE_USER+x} ]; then 
+    echo "REMOTE_USER environmental variable is not set. Re-run the install script."
     exit 1
 fi
 
@@ -21,13 +21,12 @@ fi
 # copy the directory to the blade gateway
 JOB_DIR=$(readlink -f $DIR)
 BASE_DIR=$(basename $JOB_DIR)
-BLADE_DIR=/home/$DEI_USER/BLADE/jobs/$BASE_DIR/
+BLADE_DIR=/home/$REMOTE_USER/JOBS/$BASE_DIR
 LOCAL_DIR=$JOB_DIR
-
-FILTER_FILE='.download'
+FILTER_FILE=$LOCAL_DIR/.download
 
 
 echo "Downloading ${BLADE_DIR} to ${LOCAL_DIR}..."
-sshpass -f $DEI_PW_FILE rsync --info=progress2,stats2 -avz --recursive --files-from="$FILTER_FILE"  -e ssh  $DEI_USER@login.dei.unipd.it:$BLADE_DIR $LOCAL_DIR
+rsync --info=progress2,stats2 -avz --recursive --files-from="$FILTER_FILE"  -e ssh  $REMOTE_USER@$REMOTE_ADDRESS:$BLADE_DIR $LOCAL_DIR
 # sshpass -f ~/.deipw rsync --info=progress2 -avz --include="sweeps/" --exclude="*" -e ssh  marcongi@login.dei.unipd.it:$BLADE_DIR $LOCAL_DIR
 

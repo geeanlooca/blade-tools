@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ -z ${DEI_PW_FILE+x} ]; then 
+    echo "DEI_PW_FILE environmental variable is not set. Re-run the install script."
+    exit 1
+fi
+
+if [ -z ${DEI_USER+x} ]; then 
+    echo "DEI_USER environmental variable is not set. Re-run the install script."
+    exit 1
+fi
+
+echo "$@" | sshpass -f $DEI_PW_FILE ssh -T -o StrictHostKeyChecking=no $DEI_USER@login.dei.unipd.it
+
+ 
