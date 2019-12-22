@@ -34,7 +34,7 @@ if [ -z ${DEI_PW_FILE+x} ] || [ -z ${DEI_USER+x} ]; then
     chmod 600 $password_file 
 
     # Export some variables
-    echo "export DEI_USER=${dei_user}"
+    echo "export DEI_USER=${dei_user}" >> $SHELL_FILE
     echo "export DEI_PW_FILE=${password_file}" >> $SHELL_FILE
 fi
 
